@@ -1,0 +1,335 @@
+@font-face {
+    font-family: Fira Sans;
+    src: url("../../fonts/FiraSans-Regular.ttf");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Fira Sans, sans-serif, Arial;
+    font-weight: normal;
+    font-size: 1em;
+}
+
+:root {
+    --main-background-color: #aed6ff;
+    --second-background-color: #98ccff;
+    --card-background-color: #CBDFF4;
+    --blue-text-color: #265891;
+    --card-shadow-color: #00000029;
+    --card-text-color: #3d3d3fd4;
+    --card-task-bg-color: #98ccff;
+    --light-color: #fff;
+
+    --columns: 4;
+    --betweenColumns: 15px;
+}
+
+html {
+    min-height: 100vh;
+}
+
+body {
+    background-color: #f3f3f3;
+    min-width: 320px;
+    overflow-x: hidden;
+    position: relative;
+    box-sizing: border-box;
+    height: 100vh;
+}
+
+.img {
+    padding: 0;
+    margin: 0;
+    background-image: url("../../images/7.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .img:after {
+    padding: 0;
+    margin: 0;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    opacity: .65;
+  }
+
+a {
+    text-decoration: none;
+    color: var(--card-text-color);
+
+}
+
+/* -------------- HEADER -------------- */
+
+#main-header {
+    width: 100%;
+    box-sizing: border-box;
+    height: fit-content;
+    background-color: var(--main-header-color);
+    display: flex;   
+    align-items: center;
+    justify-content: space-between;
+    font-size: 28px;
+    color: var(--blue-text-color);
+    margin-bottom: 20px;
+    padding: 5px 25px;
+    flex-wrap: wrap;
+}
+
+#main-header h3 {
+    text-align: center;
+}
+
+#profile-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#profile-info-avatar {
+    width: 100px;
+    height: 100px;
+    margin-left: 20px;
+    margin-right: 5px;
+    border-radius: 50%;
+    background: url("../../images/perry_cox.jpg") center right / cover no-repeat;
+}
+
+/* -------------- MAIN CONTENT -------------- */
+
+#main-content-container {
+    overflow: hidden;
+}
+
+#main-content {
+    padding: 0 50px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: calc(-1 * var(--betweenColumns));
+}
+
+.element-container {
+    display: flex;
+    width: calc(1/var(--columns) * 100% - 2 * var(--betweenColumns));
+    margin: var(--betweenColumns);
+}
+
+.card {
+    background: var(--card-background-color);
+    box-shadow: var(--card-shadow-color) 2px 2px 4px;
+    border-radius: 20px;
+    padding: 25px;
+    color: var(--card-text-color);
+    height: 500px;
+    width: 100%;
+    position: relative;
+    overflow-y: scroll;
+}
+
+.card-header {
+    color: var(--blue-text-color);
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    word-break: break-all;
+}
+
+.card-task {
+    border: var(--card-task-bg-color) solid 2px;
+    background-color: var(--card-task-bg-color);
+    padding: 10px;
+    box-shadow: 2px 2px 4px #00000029;
+    border-radius: 14px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    transition: all .25s ease-in-out;
+    box-sizing: border-box;
+}
+
+.card-task:empty {
+    display: none;
+}
+
+.card-task:hover {
+    background-color: var(--main-background-color);
+    border: var(--blue-text-color) solid 2px;
+}
+
+.card-task-text {
+    width: 70%;
+    margin-right: 5px;
+    word-break: break-all;
+    font-size: 18px;
+}
+
+.card-task-icons {
+    width: 30%;
+}
+
+.card-task-icons-first-row, .card-task-icons-second-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.card-task-icon {
+    width: 25px;
+    height: 25px;
+    padding: 1px;
+    min-width: 25px;
+    margin: 2px 0;
+    opacity: 0.75;
+    transition: opacity .25s ease-in-out;
+}
+
+.card-task-icon:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.element-container:first-child .card-task-icon-left {
+    display: none;
+}
+
+.element-container:nth-last-child(2) .card-task-icon-right {
+    display: none;
+}
+
+.card-task-icon-edit {
+    background: url("../../assets/edit.svg") center / cover no-repeat;
+}
+
+.card-task-icon-delete {
+    background: url("../../assets/delete-button.svg") center / cover no-repeat;
+}
+
+.card-task-icon.card-task-icon-remove-tasklist {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 1px;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+}
+
+.card-task-time {
+    margin-right: 10px;
+    font-weight: bolder;
+    font-size: 16px;
+    letter-spacing: 0.5;
+    letter-spacing: 1px;
+}
+
+.card-add-new {
+    padding: 5px;
+    transition: all .25s ease-in-out;
+    opacity: 0.75;
+    font-weight: bolder;
+    font-size: 18px;
+}
+
+.card-add-new:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.card-add-list-button {
+    font-size: 24px;
+    transition: opacity .25s ease-in-out;
+    opacity: 0.9;
+    outline: none;
+    font-weight: bolder;
+}
+
+.card-create-list-button {
+    font-size: 19px;
+    transition: opacity .25s ease-in-out;
+    opacity: 0.9;
+    outline: none;
+    padding: 5px;
+    background: var(--light-color);
+    border-radius: 5px;
+    color: var(--blue-text-color);
+    display: inline-block;
+    margin-top: 5px;
+    box-shadow: var(--card-shadow-color) 2px 2px 4px;
+}
+
+.card-create-list-button:hover {
+    opacity: 0.8;
+}
+
+.card-add-list-container {
+    transition: background-color .25s ease-in-out;
+    background-color: rgba(197, 222, 248, 0.8);
+}
+
+.card-add-list-container:hover {
+    background-color: rgba(197, 222, 248, 1);
+    cursor: pointer;
+}
+
+.card-add-list-container:hover .card-add-list {
+    opacity: 1;
+}
+
+.card-add-list-input {
+    background: var(--light-color);
+    cursor: pointer;
+    padding: 5px;
+    box-shadow: 0px 0px 3px #222223;
+    border: none;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+    outline: none;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.card-add-list-input:focus {
+    border: rgba(0, 0, 0, 0.75) solid 1px;
+}
+
+/* -------------- MEDIA QUERIES -------------- */
+
+@media only screen and (max-width : 1200px) {
+    :root {
+        --columns: 3;
+    }
+}
+
+@media only screen and (max-width : 992px) {
+    :root {
+        --columns: 2;
+    }
+
+    #main-header {
+        justify-content: space-around;
+        font-size: 28px;
+    }
+}
+
+@media only screen and (max-width : 576px) {
+    :root {
+        --columns: 1;
+    }
+}
