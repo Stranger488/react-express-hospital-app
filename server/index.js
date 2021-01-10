@@ -59,7 +59,7 @@ app.patch('/daylists/:daylistId/patients/:patientId', async (request, response) 
     const daylistId = Number(request.params.daylistId);
     const patientId = Number(request.params.patientId);
 
-    oldPatientName = daylists[daylistId].patients[patientId].patientName;
+    let oldPatientName = daylists[daylistId].patients[patientId].patientName;
     daylists[daylistId].patients[patientId].patientName = newPatientName;
     await writeData(daylists);
 
@@ -98,7 +98,7 @@ app.delete('/daylists/:daylistId/patients/:patientId', async (request, response)
     const daylistId = Number(request.params.daylistId);
     const patientId = Number(request.params.patientId);
     
-    const removedPatient = daylists[daylistId].patients[patientId];
+    const removedPatientName = daylists[daylistId].patients[patientId].patientName;
     daylists[daylistId].patients = daylists[daylistId].patients.map(
         (patient, index) => {
             if (index === patientId) {
@@ -113,7 +113,7 @@ app.delete('/daylists/:daylistId/patients/:patientId', async (request, response)
 
     response.setHeader('Content-Type', 'application/json');
     response.status(200).json({
-        info: `Patient '${removedPatient.patientName}' was successfully deleted from daylist
+        info: `Patient '${removedPatientName}' was successfully deleted from daylist
         '${daylists[daylistId].daylistDate}'`
     });
 });
@@ -124,5 +124,5 @@ app.listen(port, hostname, (err) => {
         console.error('Error: ', err);
     }
 
-    console.log(`server is working on ${hostname}:${port}`);
+    console.log(`Server is working on ${hostname}:${port}`);
 });

@@ -32,12 +32,12 @@ const Patient = ({
     };
 
     const removePatient = async () => {
-        if (patientName) {
-            const info = await removePatientServer({ daylistId, patientId });
-            console.log(info);
-    
+        if (patientName) {    
             // eslint-disable-next-line no-restricted-globals
             if (confirm(`Пациент '${patientName}' будет удален из расписания. Продолжить?`)) {
+                const info = await removePatientServer({ daylistId, patientId });
+                console.log(info);
+
                 removePatientDispatch({ daylistId, patientId });
             }
         }

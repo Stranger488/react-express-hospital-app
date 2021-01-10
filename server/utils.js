@@ -3,7 +3,7 @@ const path = require('path');
 
 const fsp = fs.promises;
 
-const dirPath = path.resolve('./temp');
+const dirPath = path.resolve(__dirname, './temp');
 const filePath = path.resolve(dirPath, 'hospital.json');
 
 const readData = async () => {

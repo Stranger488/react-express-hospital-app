@@ -100,7 +100,7 @@ a {
     margin-left: 20px;
     margin-right: 5px;
     border-radius: 50%;
-    background: url("../../images/perry_cox.jpg") center right / cover no-repeat;
+    background: url("../../images/perry_cox.jpg") top / cover no-repeat;
 }
 
 /* -------------- MAIN CONTENT -------------- */

@@ -14,19 +14,19 @@ const Daylist = ({
     removePatientlistDispatch
 }) => {
     const removePatientlist = async () => {
-        for (let i = 0; i < patients.length; i++) {
-            if (patients[i].patientName) {
-                alert("На день назначены приемы. Невозможно удалить.");
-                return;
-            }
-        }
-
         try {
-            const info = await removeDaylistServer(daylistId);
-            console.log(info);
+            for (let i = 0; i < patients.length; i++) {
+                if (patients[i].patientName) {
+                    alert("На день назначены приемы. Невозможно удалить.");
+                    return;
+                }
+            }
 
             // eslint-disable-next-line no-restricted-globals
             if (confirm(`День '${daylistDate}' будет удален. Продолжить?`)) {
+                const info = await removeDaylistServer(daylistId);
+                console.log(info);
+
                 removePatientlistDispatch(daylistId);
             }
         } catch (error) {
