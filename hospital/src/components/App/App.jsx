@@ -1,11 +1,29 @@
 import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { addDaylist as addDaylistServer,
+    getDaylists as getDaylistsServer
+} from '../../models/AppModel.js';
 import {
-    addTasklistAction
+    addDaylistAction,
+    downloadDaylistsAction
 } from '../../store/actions';
-import Tasklist from '../Tasklist/Tasklist';
+import Daylist from '../Daylist/Daylist';
 import './App.css';
 
+function makeInitpatientsFromHourBounds(leftBound, rightBound) {
+    const N = (rightBound - leftBound) * 60 / 20 + 1;
+    let patientsArr = [];
+
+    for (let i = 0; i < N; i++) {
+        const minutes = (leftBound * 60 + i * 20);
+        const hour = Math.floor(minutes / 60);
+        const minute = minutes % 60;
+
+        patientsArr[i] = {patientName: '', patientTime: `${hour}:${minute ? minute : '00'}`};
+    }
+
+    return patientsArr;
+}
 
 class App extends PureComponent {
     state = {
@@ -13,6 +31,11 @@ class App extends PureComponent {
         dateInputValue: '',
         changeInputValue: 'day'
     };
+
+    async componentDidMount() {
+        const daylists = await getDaylistsServer();
+        this.props.downloadDaylistsDispatch(daylists);
+    }
 
     showInput = () => this.setState({ isInputShown: true });
 
@@ -24,10 +47,37 @@ class App extends PureComponent {
         changeInputValue: value
     });
 
-    createDay = () => {
+    createDaylist = async () => {
         if (this.state.dateInputValue && this.state.changeInputValue) {
-            this.props.addTasklistDispatch({tasklistDay: this.state.dateInputValue, 
-                                        tasklistChange: this.state.changeInputValue});
+            let bound = [];
+            let change = '';
+            if (this.state.changeInputValue === 'day') {
+                bound = [8, 14];
+                change = 'Дневная смена';
+            }
+            else if (this.state.changeInputValue === 'evening') {
+                bound = [14, 20];
+                change = 'Вечерняя смена';
+            }
+            else {
+                bound = [8, 14];
+                change = 'Дневная смена';
+            }
+
+            let tmpArr = makeInitpatientsFromHourBounds(bound[0], bound[1]);
+
+            const info = await addDaylistServer({
+                daylistDate: this.state.dateInputValue,
+                daylistChange: change,
+                patients: [...tmpArr]
+            });
+            console.log(info);
+
+            this.props.addDaylistDispatch({ 
+                daylistDate: this.state.dateInputValue, 
+                daylistChange: change,
+                patients: [...tmpArr]
+             });
         }
 
         this.setState({
@@ -51,7 +101,7 @@ class App extends PureComponent {
 
     render() {
         const { isInputShown, dateInputValue, changeInputValue } = this.state;
-        const { tasklists } = this.props;
+        const { daylists } = this.props;
 
         return (
             <Fragment>
@@ -65,12 +115,12 @@ class App extends PureComponent {
 
                 <main id="main-content-container">
                     <div id="main-content">
-                        {tasklists.map((tasklist, index) => (
-                            <Tasklist 
-                                tasklistDay={tasklist.tasklistDay}
-                                tasklistChange={tasklist.tasklistChange}
-                                tasklistId={index}
-                                tasks={tasklist.tasks}
+                        {daylists.map((daylist, index) => (
+                            <Daylist 
+                                daylistDate={daylist.daylistDate}
+                                daylistChange={daylist.daylistChange}
+                                daylistId={index}
+                                patients={daylist.patients}
                                 key={`list${index}`}
                             />
                         ))}    
@@ -115,7 +165,7 @@ class App extends PureComponent {
                                         
                                         <span id="create-list-button"
                                             className="card-create-list-button" 
-                                            onClick={this.createDay}
+                                            onClick={this.createDaylist}
                                         >
                                             Создать
                                         </span>
@@ -131,11 +181,13 @@ class App extends PureComponent {
     }
 }
 
-const mapStateToProps = ({ tasklists }) => ({ tasklists });
+const mapStateToProps = ({ daylists }) => ({ daylists });
 
 const mapDispatchToProps = dispatch => ({
-    addTasklistDispatch: ({tasklistDay, tasklistChange}) => 
-        dispatch(addTasklistAction({tasklistDay, tasklistChange}))
+    addDaylistDispatch: ({ daylistDate, daylistChange, patients }) => 
+        dispatch(addDaylistAction({ daylistDate, daylistChange, patients })),
+    downloadDaylistsDispatch: (daylists) => 
+        dispatch(downloadDaylistsAction(daylists))
 });
 
 export default connect(

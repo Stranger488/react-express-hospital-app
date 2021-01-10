@@ -1,111 +1,89 @@
 import {
-    ADD_TASKLIST,
-    EDIT_TASK,
-    REMOVE_TASK,
-    REMOVE_TASKLIST
+    DOWNLOAD_DAYLISTS,
+    ADD_DAYLIST,
+    EDIT_PATIENT,
+    REMOVE_PATIENT,
+    REMOVE_DAYLIST,
 } from './actions';
 
 const initialState = {
-    tasklists: []
+    daylists: []
 };
-
-function makeInitTasksFromHourBounds(leftBound, rightBound) {
-    const N = (rightBound - leftBound) * 60 / 20 + 1;
-    let tasksArr = [];
-
-    for (let i = 0; i < N; i++) {
-        const minutes = (leftBound * 60 + i * 20);
-        const hour = Math.floor(minutes / 60);
-        const minute = minutes % 60;
-
-        tasksArr[i] = {taskName: '', taskTime: `${hour}:${minute ? minute : '00'}`};
-    }
-
-    return tasksArr;
-}
 
 export default function reducer(state = initialState, { type, payload }) {
     switch (type) {
-        case ADD_TASKLIST:
-            let tempChange = '';
-            let tempTasks = [];
-
-            if (payload.tasklistChange === 'day') {
-                tempChange = 'Дневная смена';
-                tempTasks = [...makeInitTasksFromHourBounds(8, 14)];
-            }
-            else if (payload.tasklistChange === 'evening') {
-                tempChange = 'Вечерняя смена';
-                tempTasks = [...makeInitTasksFromHourBounds(14, 20)];
-            }
-            else tempChange = 'Unknown';
-
+        case DOWNLOAD_DAYLISTS:
             return {
                 ...state,
-                tasklists: [
-                    ...state.tasklists,
+                daylists: payload
+            };
+
+        case ADD_DAYLIST:
+            return {
+                ...state,
+                daylists: [
+                    ...state.daylists,
                     {
-                        tasklistDay: payload.tasklistDay,
-                        tasklistChange: tempChange,
-                        tasks: tempTasks
+                        daylistDate: payload.daylistDate,
+                        daylistChange: payload.daylistChange,
+                        patients: payload.patients
                     }
                 ]
             };
 
-        case REMOVE_TASKLIST:
-            const removedTasklist = state.tasklists[payload];
-            const tasklists = state.tasklists.filter(
-                tasklist => tasklist !== removedTasklist
+        case REMOVE_DAYLIST:
+            const removedDaylist = state.daylists[payload];
+            const daylists = state.daylists.filter(
+                daylist => daylist !== removedDaylist
             );
 
             return {
                 ...state,
-                tasklists: tasklists
+                daylists: daylists
             };
 
-        case EDIT_TASK:
+        case EDIT_PATIENT:
             return {
                 ...state,
-                tasklists: state.tasklists.map(
-                    (tasklist, index) => index !== payload.tasklistId
-                        ? { ...tasklist }
+                daylists: state.daylists.map(
+                    (daylist, index) => index !== payload.daylistId
+                        ? { ...daylist }
                         : {
-                            ...tasklist,
-                            tasks: tasklist.tasks.map(
-                                (task, taskIndex) => {
-                                    if(taskIndex === payload.taskId) {
-                                        task.taskName = payload.newTaskName;
+                            ...daylist,
+                            patients: daylist.patients.map(
+                                (patient, patientIndex) => {
+                                    if(patientIndex === payload.patientId) {
+                                        patient.patientName = payload.newPatientName;
                                     }
 
-                                    return task;
+                                    return patient;
                                 }
                             ) 
                         } 
                 )
             };
 
-        case REMOVE_TASK:
-            const removedTask = state.tasklists[payload.tasklistId].tasks[payload.taskId];
-            const tasks = state.tasklists[payload.tasklistId].tasks.map(
-                (task) => {
-                    if (task === removedTask) {
-                        task.taskName = '';    
+        case REMOVE_PATIENT:
+            const patients = state.daylists[payload.daylistId].patients.map(
+                (patient, index) => {
+                    if (index === payload.patientId) {
+                        patient.patientName = '';    
                     }
 
-                    return task;
+                    return patient;
                 }
             );
 
             return {
                 ...state,
-                tasklists: state.tasklists.map(
-                    (tasklist, index) => index !== payload.tasklistId 
+                daylists: state.daylists.map(
+                    (daylist, index) => index !== payload.daylistId 
                     ? {
-                        ...tasklist
+                        ...daylist
                     }
                     : { 
-                        ...tasklist,
-                        tasks 
+                        ...daylist,
+                        patients 
                     }
                 )
             };  

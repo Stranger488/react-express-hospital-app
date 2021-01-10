@@ -1,45 +1,54 @@
-const ADD_TASKLIST = 'ADD_TASKLIST';
-const REMOVE_TASKLIST = 'REMOVE_TASKLIST';
-const EDIT_TASK = 'EDIT_TASK';
-const REMOVE_TASK = 'REMOVE_TASK';
+const DOWNLOAD_DAYLISTS = 'DOWNLOAD_DAYLISTS';
+const ADD_DAYLIST = 'ADD_DAYLIST';
+const REMOVE_DAYLIST = 'REMOVE_DAYLIST';
+const EDIT_PATIENT = 'EDIT_PATIENT';
+const REMOVE_PATIENT = 'REMOVE_PATIENT';
 
-const addTasklistAction = ({tasklistDay, tasklistChange}) => ({
-    type: ADD_TASKLIST,
+const downloadDaylistsAction = (daylists) => ({
+    type: DOWNLOAD_DAYLISTS,
+    payload: daylists
+});
+
+const addDaylistAction = ({ daylistDate, daylistChange, patients }) => ({
+    type: ADD_DAYLIST,
     payload: {
-        tasklistDay,
-        tasklistChange
+        daylistDate,
+        daylistChange,
+        patients
     }
 });
 
-const removeTasklistAction = tasklistId => ({
-    type: REMOVE_TASKLIST,
-    payload: tasklistId
+const removePatientlistAction = daylistId => ({
+    type: REMOVE_DAYLIST,
+    payload: daylistId
 });
 
-const editTaskAction = ({ tasklistId, taskId, newTaskName }) => ({
-    type: EDIT_TASK,
+const editPatientAction = ({ daylistId, patientId, newPatientName }) => ({
+    type: EDIT_PATIENT,
     payload: {
-        tasklistId,
-        taskId,
-        newTaskName
+        daylistId,
+        patientId,
+        newPatientName
     }
 });
 
-const removeTaskAction = ({ tasklistId, taskId }) => ({
-    type: REMOVE_TASK,
+const removePatientAction = ({ daylistId, patientId }) => ({
+    type: REMOVE_PATIENT,
     payload: {
-        tasklistId,
-        taskId
+        daylistId,
+        patientId
     }
 });
 
 export {
-    ADD_TASKLIST,
-    REMOVE_TASKLIST,
-    EDIT_TASK,
-    REMOVE_TASK,
-    addTasklistAction,
-    removeTasklistAction,
-    editTaskAction,
-    removeTaskAction
+    DOWNLOAD_DAYLISTS,
+    ADD_DAYLIST,
+    REMOVE_DAYLIST,
+    EDIT_PATIENT,
+    REMOVE_PATIENT,
+    downloadDaylistsAction,
+    addDaylistAction,
+    removePatientlistAction,
+    editPatientAction,
+    removePatientAction
 };

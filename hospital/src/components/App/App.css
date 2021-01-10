@@ -1,12 +1,7 @@
-@font-face {
-    font-family: Fira Sans;
-    src: url("../../fonts/FiraSans-Regular.ttf");
-}
-
 * {
     margin: 0;
     padding: 0;
-    font-family: Fira Sans, sans-serif, Arial;
+    font-family: Open Sans, sans-serif, Arial;
     font-weight: normal;
     font-size: 1em;
 }
@@ -220,7 +215,7 @@ a {
     background: url("../../assets/delete-button.svg") center / cover no-repeat;
 }
 
-.card-task-icon.card-task-icon-remove-tasklist {
+.card-task-icon.card-task-icon-remove-daylist {
     position: absolute;
     top: 5px;
     right: 5px;
